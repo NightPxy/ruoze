@@ -1,0 +1,2 @@
+type=command
+command=sh ./init_data_warehouse.sh

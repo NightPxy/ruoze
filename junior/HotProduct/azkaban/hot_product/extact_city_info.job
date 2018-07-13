@@ -1,0 +1,3 @@
+type=command
+command=sh ./extact_city_info.sh
+dependencies=init_data_warehouse
