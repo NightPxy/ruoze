@@ -6,17 +6,21 @@ import scalikejdbc.{ConnectionPool, DB, DBConnection, DBSession, GlobalSettings,
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
-  * Created by Administrator on 2018/7/19.
-  * 定位:适合闭包的快速使用API
-  * 所以非ORM向(没有以实体为中心的增删改查,没有实体关系或DSL方面内容,没有反向生成内容)
-  * 连接池 只读 事务 异步  批量
+  * 定位: 适合函数式编程的JDBC快速使用API
+  *       非ORM向(没有以实体为中心的增删改查,没有实体关系或DSL方面内容,没有反向生成内容等)
   *
-  * 连接模式:自动关闭(每次执行开启新的).
-  * 执行模式:默认,只读,事务
-  * 同步/异步
+  * 执行模式:
+  *   同步执行JDBC操作(execute)
+  *       可以选择(execute.mod)以 无事务自动提交(auto) 事务提交异常回滚(tran) 只读模式(readOnly) 执行同步操作
+  *   异步执行JDBC操作(executeAsync)
+  *       在这种情况下,应该以 Future 方式传入操作,并且异步模式将默认使用事务提交并在之后的操作异常后回滚之前的操作
+  *
+  * 数据库连接:
+  *   数据库连接将始终使用连接池获取.并且默认在放回连接池时自动关闭连接
+  *   可以通过 con.autoClose=false 来关闭自动连接关闭功能
+  *
   */
 class ScalikejdbcContext(settings:ScalikejdbcConf) {
-  /** ********************************** PUBLIC ******************************************/
 
   def conf(opts: Map[String, String]) = {
     settings.conf(opts)
@@ -36,6 +40,24 @@ class ScalikejdbcContext(settings:ScalikejdbcConf) {
 
   /**
     * 同步执行
+    *
+    * 示例:
+      ScalikejdbcContext(conf).execute {
+        implicit session =>
+          SQL("replace into `users` (`id`,`name`,`age`) VALUES (?,?,?);")
+            .bind(testcase.id, testcase.name, testcase.age)
+            .update.apply
+
+          SQL("select * from users where id = ?")
+            .bind(testcase.id)
+            .map(rs => User(rs.string("id"), rs.string("name"), rs.int("age")))
+            .list().apply()
+
+          SQL("select * from users where id = ?")
+            .bind(testcase.id)
+            .map(rs => User(rs.string("id"), rs.string("name"), rs.int("age")))
+            .single().apply()
+      }
     */
   def execute[T](execution: DBSession => T) = {
 
@@ -53,22 +75,39 @@ class ScalikejdbcContext(settings:ScalikejdbcConf) {
     }
   }
 
+  import scala.concurrent.ExecutionContext.Implicits.global
   /**
     * 异步执行
     *   1.执行必须以 future 块
     *   2.自带事务模式. 如果后执行异常将自动回滚前执行
+    *
+    * 例:
+       ScalikejdbcContext(conf).executeAsync {
+          implicit session =>
+            Future {
+              SQL("replace into `users` (`id`,`name`,`age`) VALUES (?,?,?);")
+                .bind(testcase.id, testcase.name, testcase.age)
+                .update.apply
+            }
+            Future {
+              SQL("select * from users where id = ?")
+                .bind(testcase.id)
+                .map(rs => User(rs.string("id"), rs.string("name"), rs.int("age")))
+                .single().apply()
+            }
+            Future {
+              throw new Exception(); //异常将会回滚前面提交
+            }
+        }
     */
-  def executeAsync[T](execution: (DBSession) ⇒ Future[T])(implicit ec: ExecutionContext) = {
+  def executeAsync[T](execution: (DBSession) ⇒ Future[T]) = {
     Class.forName(settings.driver)
     ConnectionPool.singleton(settings.url, settings.user, settings.password)
-    using(ConnectionPool.borrow()) { conn =>
-      val dbConnection = DB(conn).autoClose(settings.conAutoClose)
-      dbConnection futureLocalTx execution
-    }
+    DB futureLocalTx execution
   }
 }
 
 object ScalikejdbcContext {
   def apply(conf:ScalikejdbcConf): ScalikejdbcContext = new ScalikejdbcContext(conf)
-  //def apply(opts: Map[String, String]): ScalikejdbcContext = new ScalikejdbcContext().conf(opts)
+  def apply(opts: Map[String, String]): ScalikejdbcContext = new ScalikejdbcContext(ScalikejdbcConf().conf(opts))
 }

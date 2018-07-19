@@ -8,11 +8,8 @@ import java.util.concurrent.ConcurrentHashMap
   *   "db.url" -> db.url,必填
   *   "db.user" -> db.用户名 必填;
   *   "db.password" -> db.密码 必填;
-  *
   *   "execute.mod" -> 执行模式: auto:无事务自动提交  tran:事务提交异常回滚  readOnly:只读模式
-  *
   *   "con.autoClose" -> 连接自动关闭(默认true,表示连接回到连接池前将自动关闭)
-  *
   *   "logEnabled" -> 是否输出 Scalikejdbc 执行日志.选填,默认为 true
   *   "logLevel" -> 输出日志级别.选填 默认为 debug 级别
   */
