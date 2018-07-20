@@ -6,6 +6,7 @@ import scalikejdbc.{ConnectionPool, DB, DBConnection, DBSession, GlobalSettings,
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
+  * Scalikejdbc使用封装
   * 定位: 适合函数式编程的JDBC快速使用API
   *       非ORM向(没有以实体为中心的增删改查,没有实体关系或DSL方面内容,没有反向生成内容等)
   *
