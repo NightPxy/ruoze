@@ -1,14 +1,9 @@
 package night.homework.lesson02_20180721_scala2file
 
-import java.text.SimpleDateFormat
-import java.util
-import java.util.{Calendar, Date, UUID}
+import night.homework.common.io._
 
-import night.homework.common.io.FileSaveMode.FileSaveMode
-import night.homework.common.io.{FileFormat, FileSaveMode, TraversableIO, TraversableWriteAble}
-import night.homework.common.utils.RandomUtils
-
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.reflect.ClassTag
 
 /**
@@ -23,11 +18,17 @@ object ScalaToFileApp {
       list += TestData.randomTestData
     }
 
-    list.writer.format(FileFormat.Text).mode(FileSaveMode.Overwrite).save("D:\\data\\TestData\\test.txt")
+    list
+      .writer(mutable.HashMap[String,String]())
+      .format(ReadWriteFormat.Text)
+      .mode(SaveMode.Overwrite)
+     // .text("D:\\data\\TestData\\test.txt")
 
 
 
-    val readList = TraversableIO.read[TestData].text("D:\\data\\TestData\\test.txt")
+    val readList = TraversableIO
+      .read[TestData](mutable.HashMap[String,String]())
+      .text("D:\\data\\TestData\\test.txt")
 
     readList.map(el => println(el.toString))
   }

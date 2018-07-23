@@ -3,6 +3,7 @@ package night.homework.common.scalikejdbc
 import scalikejdbc.DB.using
 import scalikejdbc.{ConnectionPool, DB, DBSession, GlobalSettings, LoggingSQLAndTimeSettings}
 
+import scala.collection.mutable
 import scala.concurrent.Future
 
 /**
@@ -23,7 +24,7 @@ import scala.concurrent.Future
   */
 class ScalikejdbcContext(settings:ScalikejdbcConf) {
 
-  def conf(opts: Map[String, String]) = {
+  def conf(opts: mutable.HashMap[String, String]) = {
     settings.conf(opts)
 
     GlobalSettings.loggingSQLAndTime = LoggingSQLAndTimeSettings(
@@ -110,5 +111,5 @@ class ScalikejdbcContext(settings:ScalikejdbcConf) {
 
 object ScalikejdbcContext {
   def apply(conf:ScalikejdbcConf): ScalikejdbcContext = new ScalikejdbcContext(conf)
-  def apply(opts: Map[String, String]): ScalikejdbcContext = new ScalikejdbcContext(ScalikejdbcConf().conf(opts))
+  def apply(opts: mutable.HashMap[String, String]): ScalikejdbcContext = new ScalikejdbcContext(ScalikejdbcConf().conf(opts))
 }

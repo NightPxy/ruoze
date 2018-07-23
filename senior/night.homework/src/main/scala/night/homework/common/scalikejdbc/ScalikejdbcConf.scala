@@ -14,10 +14,8 @@ import scala.collection.mutable
   *   "logEnabled" -> 是否输出 Scalikejdbc 执行日志.选填,默认为 true
   *   "logLevel" -> 输出日志级别.选填 默认为 debug 级别
   */
-case class ScalikejdbcConf() {
+case class ScalikejdbcConf(options:mutable.HashMap[String, String]) {
   import night.homework.common.utils.impros.all._;
-
-  private val options = new scala.collection.mutable.HashMap[String, String]()
 
   val dbDriverKey = "db.driver"
   def driver() = options.assertGet(dbDriverKey)
@@ -79,7 +77,7 @@ case class ScalikejdbcConf() {
   }
 
 
-  def conf(opts: HashMap[String, String]) = {
+  def conf(opts: mutable.HashMap[String, String]) = {
     opts.map(item=>this.options += item._1 -> item._2)
     this;
   }

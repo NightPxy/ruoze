@@ -4,8 +4,8 @@ import night.homework.common.scalikejdbc.{ScalikejdbcConf, ScalikejdbcContext}
 import night.homework.common.test.TestUtils
 import scalikejdbc.SQL
 
-import scala.concurrent.{Await, Awaitable, Future}
-import scala.util.{Failure, Success}
+import scala.collection.mutable
+import scala.concurrent.Future
 
 /**
   * Created by Night on 2018/7/21.
@@ -23,7 +23,7 @@ class UserTest(testcase: User) extends TestUtils {
   val password = "12abAB"
 
   def init() = {
-    val conf = ScalikejdbcConf(Map(
+    val conf = ScalikejdbcConf(mutable.HashMap(
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
@@ -49,7 +49,7 @@ class UserTest(testcase: User) extends TestUtils {
   }
 
   def crud() = {
-    val conf = ScalikejdbcConf(Map(
+    val conf = ScalikejdbcConf(mutable.HashMap(
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
@@ -100,7 +100,7 @@ class UserTest(testcase: User) extends TestUtils {
   }
 
   def rollback() = {
-    val conf = ScalikejdbcConf(Map(
+    val conf = ScalikejdbcConf(mutable.HashMap(
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
@@ -138,7 +138,7 @@ class UserTest(testcase: User) extends TestUtils {
   }
 
   def readOnly() = {
-    val conf = ScalikejdbcConf(Map(
+    val conf = ScalikejdbcConf(mutable.HashMap(
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
@@ -180,7 +180,7 @@ class UserTest(testcase: User) extends TestUtils {
   }
 
   def async() = {
-    val conf = ScalikejdbcConf(Map(
+    val conf = ScalikejdbcConf(mutable.HashMap(
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,

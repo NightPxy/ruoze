@@ -13,4 +13,6 @@ case class HashMapImpr[TKey, TValue](hashMap: scala.collection.mutable.HashMap[T
       throw new Throwable(s" ${msg} 配置[${key}]不能为空 ")
     }
   }
+
+  def set(key: TKey, value: TValue) = hashMap += key -> value
 }
