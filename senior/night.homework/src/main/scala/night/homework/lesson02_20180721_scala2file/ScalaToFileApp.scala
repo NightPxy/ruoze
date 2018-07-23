@@ -16,20 +16,20 @@ import scala.reflect.ClassTag
   */
 object ScalaToFileApp {
   def main(args: Array[String]): Unit = {
-    implicit def traversableSaveToFile[T <: TraversableWriteAble : ClassTag](value: Traversable[T]) = TraversableIO(value);
+    implicit def traversableSaveToFile[T : ClassTag](value: Traversable[T]) = TraversableIO(value);
 
     val list = ListBuffer[TestData]()
-    for (i <- 1 to 1000000) {
+    for (i <- 1 to 100) {
       list += TestData.randomTestData
     }
 
-    val a = List(List(1,2),List(3,4));
-
-    println(1/0)
+    list.writer.format(FileFormat.Text).mode(FileSaveMode.Overwrite).save("D:\\data\\TestData\\test.txt")
 
 
-//    list
-    //      .writer.format(FileFormat.Text).mode(FileSaveMode.Overwrite).save("D:\\data\\TestData\\test.txt")
+
+    val readList = TraversableIO.read[TestData].text("D:\\data\\TestData\\test.txt")
+
+    readList.map(el => println(el.toString))
   }
 
 }

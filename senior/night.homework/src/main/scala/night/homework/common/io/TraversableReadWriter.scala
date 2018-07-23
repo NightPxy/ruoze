@@ -1,23 +1,26 @@
 package night.homework.common.io
 
 
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.reflect.{ClassTag, classTag}
 
 /**
   * Created by Night on 2018/7/22.
   */
-abstract class TraversableReadWriter[T : ClassTag] {
-  protected val runtimeClass = classTag[T].runtimeClass.getClass
-  protected val runtimeClassFields = runtimeClass.getDeclaredFields
+trait TraversableReadWriter {
+  protected var dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]")
+  protected var simpleDateFormat: SimpleDateFormat = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]")
 
-
-  def write[T <: TraversableWriteAble: ClassTag](traversableData: Traversable[T], path: String, lineSeq:String,fieldSeq:String = "\t")
-  def read[T <: TraversableReadAble: ClassTag](traversableData: Traversable[T], path: String, lineSeq:String,fieldSeq:String = "\t")
 }
 
-trait TraversableWriteAble {
-  def writeLine() : String
+trait TraversableWriteAble extends TraversableReadWriter {
+  def save[T: ClassTag](traversableData: Traversable[T], conf: mutable.HashMap[String, String]);
 }
-trait TraversableReadAble {
-  def readLine[T](line:String) : T
+
+trait TraversableReadAble extends TraversableReadWriter {
+  def read[T: ClassTag](conf: mutable.HashMap[String, String]): ListBuffer[T]
 }

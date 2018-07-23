@@ -1,5 +1,8 @@
 package night.homework.common.scalikejdbc
 
+import scala.collection.immutable.HashMap
+import scala.collection.mutable
+
 /**
   * Scalikejdbc 配置项
   *   "db.driver" -> db.JDBC驱动,必填
@@ -12,18 +15,9 @@ package night.homework.common.scalikejdbc
   *   "logLevel" -> 输出日志级别.选填 默认为 debug 级别
   */
 case class ScalikejdbcConf() {
+  import night.homework.common.utils.impros.all._;
 
   private val options = new scala.collection.mutable.HashMap[String, String]()
-
-  private case class optionHashMapImprovements(hashMap: scala.collection.mutable.HashMap[String, String]) {
-    def assertGet(key: String) = hashMap.get(key) match {
-      case Some(value) => value
-      case None => throw new ScalikejdbcExecuteException(s" Scalikejdbc 配置[${key}]不能为空 ")
-    }
-  }
-
-  private implicit def hashMapImprovements(hashMap: scala.collection.mutable.HashMap[String, String]) =
-    optionHashMapImprovements(hashMap);
 
   val dbDriverKey = "db.driver"
   def driver() = options.assertGet(dbDriverKey)
@@ -85,7 +79,7 @@ case class ScalikejdbcConf() {
   }
 
 
-  def conf(opts: Map[String, String]) = {
+  def conf(opts: HashMap[String, String]) = {
     opts.map(item=>this.options += item._1 -> item._2)
     this;
   }
@@ -93,5 +87,5 @@ case class ScalikejdbcConf() {
 }
 
 object ScalikejdbcConf {
-  def apply(conf: Map[String, String]): ScalikejdbcConf = new ScalikejdbcConf().conf(conf)
+  def apply(conf: mutable.HashMap[String, String]): ScalikejdbcConf = new ScalikejdbcConf().conf(conf)
 }
