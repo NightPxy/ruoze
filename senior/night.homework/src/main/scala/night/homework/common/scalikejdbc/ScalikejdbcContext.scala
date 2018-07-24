@@ -24,21 +24,15 @@ import scala.concurrent.Future
   */
 class ScalikejdbcContext(settings:ScalikejdbcConf) {
 
-  def conf(opts: mutable.HashMap[String, String]) = {
-    settings.conf(opts)
-
-    GlobalSettings.loggingSQLAndTime = LoggingSQLAndTimeSettings(
-      enabled = settings.logEnabled,
-      singleLineMode = false,
-      printUnprocessedStackTrace = true,
-      stackTraceDepth = 0,
-      logLevel = settings.logLevel,
-      warningEnabled = false,
-      warningThresholdMillis = 3000L,
-      warningLogLevel = 'warn)
-
-    this;
-  }
+  GlobalSettings.loggingSQLAndTime = LoggingSQLAndTimeSettings(
+    enabled = settings.logEnabled,
+    singleLineMode = false,
+    printUnprocessedStackTrace = true,
+    stackTraceDepth = 0,
+    logLevel = settings.logLevel,
+    warningEnabled = false,
+    warningThresholdMillis = 3000L,
+    warningLogLevel = 'warn)
 
   /**
     * 同步执行
@@ -111,5 +105,5 @@ class ScalikejdbcContext(settings:ScalikejdbcConf) {
 
 object ScalikejdbcContext {
   def apply(conf:ScalikejdbcConf): ScalikejdbcContext = new ScalikejdbcContext(conf)
-  def apply(opts: mutable.HashMap[String, String]): ScalikejdbcContext = new ScalikejdbcContext(ScalikejdbcConf().conf(opts))
+  def apply(opts: mutable.HashMap[String, String]): ScalikejdbcContext = new ScalikejdbcContext(ScalikejdbcConf(opts))
 }

@@ -24,10 +24,23 @@ case class ReadWriteConf(hashMap: mutable.HashMap[String, String]) {
 
   def outputTextPath() = hashMap.assertGet("output.text.path")
 
+  def outputJdbcTable(table: String) = hashMap.set("output.jdbc.table", table)
+
+  def outputJdbcTable() = hashMap.assertGet("output.jdbc.table")
+
+
+
+
+
   def inputTextPath(path: String) = hashMap.set("input.text.path", path)
+
   def inputTextPath() = hashMap.assertGet("input.text.path")
 
   def inputFormat(format: ReadWriteFormat) = hashMap.set("input.format", ReadWriteFormat(format.id).toString)
 
   def inputFormat() = ReadWriteFormat.withName(hashMap.getOrElse("input.format", "Text"))
+
+  def inputJdbcTable(table: String) = hashMap.set("input.jdbc.table", table)
+
+  def inputJdbcTable() = hashMap.assertGet("input.jdbc.table")
 }

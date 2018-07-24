@@ -11,7 +11,7 @@ import scala.collection.mutable
   *   "db.password" -> db.密码 必填;
   *   "execute.mod" -> 执行模式: auto:无事务自动提交  tran:事务提交异常回滚  readOnly:只读模式
   *   "con.autoClose" -> 连接自动关闭(默认true,表示连接回到连接池前将自动关闭)
-  *   "logEnabled" -> 是否输出 Scalikejdbc 执行日志.选填,默认为 true
+  *   "logEnabled" -> 是否输出 Scalikejdbc 执行日志.选填,默认为 false
   *   "logLevel" -> 输出日志级别.选填 默认为 debug 级别
   */
 case class ScalikejdbcConf(options:mutable.HashMap[String, String]) {
@@ -63,7 +63,7 @@ case class ScalikejdbcConf(options:mutable.HashMap[String, String]) {
   }
 
   val logEnabledKey = "log.enabled"
-  def logEnabled() = options.getOrElse(logEnabledKey, "true").toBoolean
+  def logEnabled() = options.getOrElse(logEnabledKey, "false").toBoolean
   def logEnabled(value: Boolean) = {
     options += logEnabledKey -> value.toString;
     this;
@@ -85,5 +85,5 @@ case class ScalikejdbcConf(options:mutable.HashMap[String, String]) {
 }
 
 object ScalikejdbcConf {
-  def apply(conf: mutable.HashMap[String, String]): ScalikejdbcConf = new ScalikejdbcConf().conf(conf)
+  //def apply(conf: mutable.HashMap[String, String]): ScalikejdbcConf = new ScalikejdbcConf(conf)
 }

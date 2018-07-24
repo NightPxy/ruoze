@@ -12,9 +12,10 @@ import scala.reflect.ClassTag
 case class TraversableIO[T : ClassTag](traversableData: Traversable[T]) extends UsingPattern {
 
   def writer[T : ClassTag](conf:mutable.HashMap[String,String]) = TraversableWriter(traversableData,conf)
-
+  def writer[T : ClassTag]() = TraversableWriter(traversableData,mutable.HashMap[String,String]())
 }
 
 object TraversableIO {
   def read[T : ClassTag](conf:mutable.HashMap[String,String]) = TraversableReader(conf)
+  def read[T : ClassTag]() = TraversableReader(mutable.HashMap[String,String]())
 }

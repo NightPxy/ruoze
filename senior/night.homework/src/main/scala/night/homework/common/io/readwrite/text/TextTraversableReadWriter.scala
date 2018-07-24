@@ -66,7 +66,7 @@ private[io] class TextTraversableReadWriter
     }
   }
 
-  override def read[T: ClassTag](conf: mutable.HashMap[String, String]): ListBuffer[T] = {
+  override def read[T: ClassTag](conf: mutable.HashMap[String, String]): List[T] = {
     val path = conf.inputTextPath;
     val runtimeClass = classTag[T].runtimeClass
     val runtimeClassFields = runtimeClass.getDeclaredFields
@@ -92,7 +92,7 @@ private[io] class TextTraversableReadWriter
             listBuffer += element
           }
         }
-        return listBuffer
+        return listBuffer.toList
       }
     }
   }

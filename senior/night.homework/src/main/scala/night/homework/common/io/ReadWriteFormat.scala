@@ -11,5 +11,10 @@ object ReadWriteFormat extends Enumeration {
   /**
     * 文本型文件
     */
-  val Text = Value(0, "Text")
+  val Text = Value("Text")
+
+  /**
+    * Jdbc
+    */
+  val Jdbc = Value("Jdbc")
 }

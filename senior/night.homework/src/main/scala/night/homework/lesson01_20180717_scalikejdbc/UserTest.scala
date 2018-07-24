@@ -1,7 +1,7 @@
 package night.homework.lesson01_20180717_scalikejdbc
 
 import night.homework.common.scalikejdbc.{ScalikejdbcConf, ScalikejdbcContext}
-import night.homework.common.test.TestUtils
+import night.homework.common.utils.TestUtils
 import scalikejdbc.SQL
 
 import scala.collection.mutable

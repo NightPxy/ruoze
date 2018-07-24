@@ -22,5 +22,5 @@ private[io] trait TraversableWriteAble extends TraversableReadWriter {
 }
 
 private[io] trait TraversableReadAble extends TraversableReadWriter {
-  def read[T: ClassTag](conf: mutable.HashMap[String, String]): ListBuffer[T]
+  def read[T: ClassTag](conf: mutable.HashMap[String, String]): List[T]
 }
