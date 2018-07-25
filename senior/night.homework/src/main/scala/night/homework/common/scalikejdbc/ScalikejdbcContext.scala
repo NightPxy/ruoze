@@ -28,7 +28,7 @@ class ScalikejdbcContext(settings:ScalikejdbcConf) {
     enabled = settings.logEnabled,
     singleLineMode = false,
     printUnprocessedStackTrace = true,
-    stackTraceDepth = 0,
+    stackTraceDepth = 10,
     logLevel = settings.logLevel,
     warningEnabled = false,
     warningThresholdMillis = 3000L,

@@ -28,7 +28,7 @@ object ScalaIOTest extends App with TestUtils{
   //断言 Overwrite 数据100条
   assertTrue {
     generateData(100).writer.format(ReadWriteFormat.Text).mode(SaveMode.Overwrite).text(textOutputPath)
-    TraversableIO.read[Data].text(textOutputPath).length == 100
+    TraversableIO.read.text[Data](textOutputPath).length == 100
   }
 
 
@@ -42,13 +42,13 @@ object ScalaIOTest extends App with TestUtils{
     // Ignore模式 追加100条
     generateData(100).writer.format(ReadWriteFormat.Text).mode(SaveMode.Ignore).text(textOutputPath)
 
-    TraversableIO.read[Data].text(textOutputPath).length == 100
+    TraversableIO.read.text[Data](textOutputPath).length == 100
   }
 
   //断言 Overwrite 数据100条
   assertTrue {
     generateData(100).writer.format(ReadWriteFormat.Text).mode(SaveMode.Overwrite).text(textOutputPath)
-    TraversableIO.read[Data].text(textOutputPath).length == 100
+    TraversableIO.read.text[Data](textOutputPath).length == 100
   }
 
   /***************************** Text ***********************************/
@@ -60,7 +60,7 @@ object ScalaIOTest extends App with TestUtils{
   //断言 Overwrite 数据100条
   assertTrue {
     generateData(100).writer.mode(SaveMode.Overwrite).jdbc(table,driver,url,user,password)
-    TraversableIO.read[Data].jdbc(table,driver,url,user,password).length == 100
+    TraversableIO.read.jdbc[Data](table,driver,url,user,password).length == 100
   }
   //断言text数据100条(断言 ErrorIfExists,Ignore 模式无效)
   assertTrue {
@@ -71,13 +71,13 @@ object ScalaIOTest extends App with TestUtils{
     // Ignore模式 追加100条
     generateData(100).writer.mode(SaveMode.Ignore).jdbc(table,driver,url,user,password)
 
-    TraversableIO.read[Data].jdbc(table,driver,url,user,password).length == 100
+    TraversableIO.read.jdbc[Data](table,driver,url,user,password).length == 100
   }
 
   //断言 Overwrite 数据100条
   assertTrue {
     generateData(100).writer.mode(SaveMode.Overwrite).jdbc(table,driver,url,user,password)
-    TraversableIO.read[Data].jdbc(table,driver,url,user,password).length == 100
+    TraversableIO.read.jdbc[Data](table,driver,url,user,password).length == 100
   }
 
   println("SUCCESS")

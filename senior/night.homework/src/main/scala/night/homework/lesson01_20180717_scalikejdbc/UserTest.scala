@@ -12,6 +12,21 @@ import scala.concurrent.Future
   */
 case class User(id: String, name: String, age: Int)
 
+object UserTestApp extends App {
+
+  /**
+    * 作业: Scalikejdbc => User(id: String, name: String, age: Int)  封装增删改查
+    */
+  val user = User("userTest", "userTest", 1);
+  val test = new UserTest(user).init()
+  test
+    .crud()
+    .rollback()
+    .readOnly()
+    .async()
+
+}
+
 class UserTest(testcase: User) extends TestUtils {
 
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -27,7 +42,8 @@ class UserTest(testcase: User) extends TestUtils {
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
-      "db.password" -> password
+      "db.password" -> password,
+      "log.enabled" -> "true"
     ));
 
     ScalikejdbcContext(conf).execute {
@@ -53,7 +69,8 @@ class UserTest(testcase: User) extends TestUtils {
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
-      "db.password" -> password
+      "db.password" -> password,
+      "log.enabled" -> "true"
     ));
 
     //断言写入成功
@@ -105,7 +122,8 @@ class UserTest(testcase: User) extends TestUtils {
       "db.url" -> url,
       "db.user" -> user,
       "db.password" -> password,
-      "execute.mod" -> "tran"
+      "execute.mod" -> "tran",
+      "log.enabled" -> "true"
     ));
 
     //异常回滚写入
@@ -143,7 +161,8 @@ class UserTest(testcase: User) extends TestUtils {
       "db.url" -> url,
       "db.user" -> user,
       "db.password" -> password,
-      "execute.mod" -> "readOnly"
+      "execute.mod" -> "readOnly",
+      "log.enabled" -> "true"
     ));
 
     //断言查询成功
@@ -184,7 +203,8 @@ class UserTest(testcase: User) extends TestUtils {
       "db.driver" -> driver,
       "db.url" -> url,
       "db.user" -> user,
-      "db.password" -> password
+      "db.password" -> password,
+      "log.enabled" -> "true"
     ));
 
     //断言写入异步成功且查询成功

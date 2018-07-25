@@ -19,9 +19,9 @@ case class ScalikejdbcConf(options:mutable.HashMap[String, String]) {
 
   val dbDriverKey = "db.driver"
   def driver() = options.assertGet(dbDriverKey)
-  def driver(value: String) = {
-    options += dbDriverKey -> value
-    this
+    def driver(value: String) = {
+      options += dbDriverKey -> value
+      this
   }
 
   val dbUrlKey = "db.url"

@@ -5,6 +5,8 @@ import night.homework.common.io.{SaveMode, TraversableIO}
 import night.homework.lesson02_20180721_scalaio.Data
 import night.homework.lesson02_20180721_scalaio.ScalaIOTest.{driver, password, table, textOutputPath, url, user}
 
+import scala.collection.mutable
+import scala.io.Source
 import scala.reflect.ClassTag
 
 /**
@@ -12,6 +14,9 @@ import scala.reflect.ClassTag
   */
 object ScalaWc extends App {
 
+  var toBuffer2: mutable.Buffer[String] = Source.fromFile("d:///log.txt").getLines().toBuffer
+
+  val  a=toBuffer2
   /**
     * 作业: 读取文本中的数据 单词计数后将结果写入 MySQL
     */
